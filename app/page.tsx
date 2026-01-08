@@ -1,6 +1,6 @@
 import TrendingBar from "@/components/TrendingBar";
 import HeroSlider from "@/components/HeroSlider";
-import NewsFeed from "@/components/NewsFeed";
+import NewsFeed from "@/components/newsFeed/NewsFeed.server";
 import CategorySection from "@/components/CategorySection";
 import Sidebar from "@/components/Sidebar";
 

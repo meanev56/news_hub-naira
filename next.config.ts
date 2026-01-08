@@ -8,6 +8,15 @@ const nextConfig = {
     // or set it to the absolute path:
     // root: 'C:\\Users\\DELL\\Downloads\\january\\news_nairametrics_hub',
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "nairametrics.com",
+        pathname: "/wp-content/uploads/**",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
