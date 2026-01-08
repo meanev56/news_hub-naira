@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/ReactQueryProvider"; // client wrapper
+import './globals.css'
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
