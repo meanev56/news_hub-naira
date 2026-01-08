@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Menu, X, ChevronDown, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { navigationItems, NavItem } from "@/services/api";
 
 export default function Header() {
@@ -27,14 +28,22 @@ export default function Header() {
       <div className="bg-header-dark py-2">
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
-            <Link href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-              Login
-            </Link>
-            <span className="text-primary-foreground/50">|</span>
-            <Link href="#" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-              Register
-            </Link>
+            <SignedOut>
+              <Link href="/sign-in" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                Login
+              </Link>
+              <span className="text-primary-foreground/50">|</span>
+              <Link href="/sign-up" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                Register
+              </Link>
+            </SignedOut>
+
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </div>
+
+          {/* Social Links */}
           <div className="flex items-center gap-3">
             <a href="https://facebook.com/nairametrics" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
               <Facebook className="w-4 h-4" />
@@ -52,7 +61,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Logo Section */}
+      {/* Logo */}
       <div className="bg-header py-6">
         <div className="container">
           <Link href="/" className="block text-center">
@@ -65,33 +74,31 @@ export default function Header() {
 
       {/* Navigation */}
       <nav className="bg-header border-t border-primary-foreground/20">
-        <div className="container">
-          <div className="flex items-center justify-between">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-3 text-primary-foreground"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+        <div className="container flex items-center justify-between">
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-3 text-primary-foreground"
+            aria-label="Toggle menu"
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center">
-              {navigationItems.map((item) => (
-                <NavItemComponent key={item.slug || "home"} item={item} />
-              ))}
-            </ul>
+          {/* Desktop Nav */}
+          <ul className="hidden lg:flex items-center">
+            {navigationItems.map((item) => (
+              <NavItemComponent key={item.slug || "home"} item={item} />
+            ))}
+          </ul>
 
-            {/* Search Button */}
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-3 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Search */}
+          <button
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="p-3 text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+            aria-label="Search"
+          >
+            <Search className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Mobile Menu */}
@@ -99,11 +106,7 @@ export default function Header() {
           <div className="lg:hidden bg-header border-t border-primary-foreground/20 animate-fade-in">
             <ul className="py-2">
               {navigationItems.map((item) => (
-                <MobileNavItem
-                  key={item.slug || "home"}
-                  item={item}
-                  onClose={() => setIsMenuOpen(false)}
-                />
+                <MobileNavItem key={item.slug || "home"} item={item} onClose={() => setIsMenuOpen(false)} />
               ))}
             </ul>
           </div>
