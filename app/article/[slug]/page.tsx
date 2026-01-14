@@ -156,6 +156,8 @@ export default function ArticlePage() {
               src={imageUrl}
               alt={stripHtml(post.title.rendered)}
               className="w-full rounded-lg"
+              width={800}
+              height={500}
             />
           </div>
 
