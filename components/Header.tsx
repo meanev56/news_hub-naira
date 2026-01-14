@@ -1,18 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Menu, X, ChevronDown, Facebook, Twitter, Youtube, Linkedin } from "lucide-react";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  Facebook,
+  Twitter,
+  Youtube,
+  Linkedin,
+  LogOut,
+} from "lucide-react";
 import { navigationItems, NavItem } from "@/services/api";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState<{ email: string; id: string } | null>(null);
+
   const router = useRouter();
 
+  // Fetch current user on mount
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user || null));
+  }, []);
+
+  // Handle logout
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setUser(null);
+    router.push("/");
+  };
+
+  // Handle search
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -28,33 +54,69 @@ export default function Header() {
       <div className="bg-header-dark py-2">
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
-            <SignedOut>
-              <Link href="/sign-in" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                Login
-              </Link>
-              <span className="text-primary-foreground/50">|</span>
-              <Link href="/sign-up" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                Register
-              </Link>
-            </SignedOut>
+            {!user && (
+              <>
+                <Link
+                  href="/login"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                >
+                  Login
+                </Link>
+                <span className="text-primary-foreground/50">|</span>
+                <Link
+                  href="/register"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                >
+                  Register
+                </Link>
+              </>
+            )}
 
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+            {user && (
+              <div className="flex items-center gap-2">
+                <span className="text-primary-foreground/90 font-medium">{user.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-1 text-red-500 hover:text-red-600"
+                >
+                  <LogOut className="w-4 h-4" /> Logout
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Social Links */}
           <div className="flex items-center gap-3">
-            <a href="https://facebook.com/nairametrics" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <a
+              href="https://facebook.com/nairametrics"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               <Facebook className="w-4 h-4" />
             </a>
-            <a href="https://twitter.com/nairametrics" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <a
+              href="https://twitter.com/nairametrics"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               <Twitter className="w-4 h-4" />
             </a>
-            <a href="https://youtube.com/nairametrics" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <a
+              href="https://youtube.com/nairametrics"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               <Youtube className="w-4 h-4" />
             </a>
-            <a href="https://linkedin.com/company/nairametrics" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+            <a
+              href="https://linkedin.com/company/nairametrics"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+            >
               <Linkedin className="w-4 h-4" />
             </a>
           </div>
@@ -106,7 +168,11 @@ export default function Header() {
           <div className="lg:hidden bg-header border-t border-primary-foreground/20 animate-fade-in">
             <ul className="py-2">
               {navigationItems.map((item) => (
-                <MobileNavItem key={item.slug || "home"} item={item} onClose={() => setIsMenuOpen(false)} />
+                <MobileNavItem
+                  key={item.slug || "home"}
+                  item={item}
+                  onClose={() => setIsMenuOpen(false)}
+                />
               ))}
             </ul>
           </div>
@@ -197,7 +263,11 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
             onClick={() => setIsExpanded(!isExpanded)}
             className="p-3 text-primary-foreground"
           >
-            <ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${
+                isExpanded ? "rotate-180" : ""
+              }`}
+            />
           </button>
         )}
       </div>

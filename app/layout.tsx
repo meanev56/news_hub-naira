@@ -5,8 +5,8 @@ import Footer from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/ReactQueryProvider"; // client wrapper
-import { ClerkProvider } from "@clerk/nextjs";
 import './globals.css';
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: 'Nairametrics Clone',
@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen flex flex-col bg-background text-foreground">
         {/* ClerkProvider must wrap all components needing auth */}
-        <ClerkProvider>
+        <AuthProvider>
           {/* React Query provider for data fetching */}
           <ReactQueryProvider>
             {/* Tooltip provider */}
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Footer />
             </TooltipProvider>
           </ReactQueryProvider>
-        </ClerkProvider>
+        </AuthProvider>
       </body>
     </html>
   );
