@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Clock,
   User,
@@ -151,7 +152,7 @@ export default function ArticlePage() {
 
           {/* Featured Image */}
           <div className="mb-6">
-            <img
+            <Image
               src={imageUrl}
               alt={stripHtml(post.title.rendered)}
               className="w-full rounded-lg"
@@ -161,7 +162,7 @@ export default function ArticlePage() {
           {/* Share Buttons */}
           <div className="flex items-center gap-3 mb-6 pb-6 border-b border-border-light">
             <span className="text-sm font-medium">Share:</span>
-            <a
+            <Link
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
                 shareUrl
               )}`}
@@ -170,8 +171,8 @@ export default function ArticlePage() {
               className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
             >
               <Facebook className="w-4 h-4" />
-            </a>
-            <a
+            </Link>
+            <Link
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
                 shareUrl
               )}&text=${encodeURIComponent(shareTitle)}`}
@@ -180,8 +181,8 @@ export default function ArticlePage() {
               className="p-2 bg-sky-500 text-white rounded hover:bg-sky-600 transition-colors"
             >
               <Twitter className="w-4 h-4" />
-            </a>
-            <a
+            </Link>
+            <Link
               href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
                 shareUrl
               )}&title=${encodeURIComponent(shareTitle)}`}
@@ -190,7 +191,7 @@ export default function ArticlePage() {
               className="p-2 bg-blue-700 text-white rounded hover:bg-blue-800 transition-colors"
             >
               <Linkedin className="w-4 h-4" />
-            </a>
+            </Link>
             <button
               onClick={() => {
                 if (navigator.share) {

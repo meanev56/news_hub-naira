@@ -14,12 +14,6 @@ import {
 import SectionHeader from "./SectionHeader";
 import { SidebarSkeleton } from "./Skeleton";
 
-// Explicit type for fetchPosts response
-interface FetchPostsResponse {
-  posts: WPPost[];
-  total: number;
-}
-
 export default function Sidebar() {
   const [latestPosts, setLatestPosts] = useState<WPPost[]>([]);
   const [popularPosts, setPopularPosts] = useState<WPPost[]>([]);
@@ -28,15 +22,11 @@ export default function Sidebar() {
   useEffect(() => {
     const loadSidebarData = async () => {
       try {
-        // Type each API call individually
-        const latestData: FetchPostsResponse = await fetchPosts({ perPage: 5 });
+        const latest = await fetchPosts({ perPage: 5 });
+        const popular = await fetchPopularPosts();
 
-        const popularDataRaw = await fetchPopularPosts();
-        const popularData: WPPost[] =
-          Array.isArray(popularDataRaw) ? popularDataRaw : popularDataRaw.posts ?? [];
-
-        setLatestPosts(latestData.posts);
-        setPopularPosts(popularData);
+        setLatestPosts(Array.isArray(latest) ? latest : []);
+        setPopularPosts(Array.isArray(popular) ? popular : []);
       } catch (error) {
         console.error("Failed to load sidebar data:", error);
       } finally {
@@ -88,8 +78,11 @@ function SidebarPost({ post, showComments }: SidebarPostProps) {
   const imageUrl = getFeaturedImageUrl(post);
 
   return (
-    <article className="article-card flex gap-3 group">
-      <Link href={`/article/${post.slug}`} className="flex-shrink-0 w-[80px] h-[60px] relative">
+    <article className="flex gap-3 group">
+      <Link
+        href={`/article/${post.slug}`}
+        className="relative w-[80px] h-[60px] shrink-0"
+      >
         <Image
           src={imageUrl}
           alt={stripHtml(post.title.rendered)}
@@ -99,9 +92,11 @@ function SidebarPost({ post, showComments }: SidebarPostProps) {
       </Link>
 
       <div className="flex-1 min-w-0">
-        <h4 className="article-title text-sm font-bold leading-snug line-clamp-2 mb-1">
+        <h4 className="text-sm font-bold leading-snug line-clamp-2 mb-1">
           <Link href={`/article/${post.slug}`}>
-            <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+            <span
+              dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+            />
           </Link>
         </h4>
 

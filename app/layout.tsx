@@ -6,18 +6,30 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/ReactQueryProvider"; // client wrapper
 import { ClerkProvider } from "@clerk/nextjs";
-import './globals.css'
+import './globals.css';
+
+export const metadata = {
+  title: 'Nairametrics Clone',
+  description: 'Nairametrics clone built with Next.js, Tailwind CSS, and Clerk',
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
+    <html lang="en" className="scroll-smooth">
+      <body className="min-h-screen flex flex-col bg-background text-foreground">
+        {/* ClerkProvider must wrap all components needing auth */}
         <ClerkProvider>
+          {/* React Query provider for data fetching */}
           <ReactQueryProvider>
+            {/* Tooltip provider */}
             <TooltipProvider>
+              {/* Global toaster */}
               <Toaster />
+              {/* Header */}
               <Header />
+              {/* Main content */}
               <main className="flex-1">{children}</main>
+              {/* Footer */}
               <Footer />
             </TooltipProvider>
           </ReactQueryProvider>
