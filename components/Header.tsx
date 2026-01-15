@@ -87,38 +87,10 @@ export default function Header() {
 
           {/* Social Links */}
           <div className="flex items-center gap-3">
-            <a
-              href="https://facebook.com/nairametrics"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-            >
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com/nairametrics"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
-            <a
-              href="https://youtube.com/nairametrics"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-            >
-              <Youtube className="w-4 h-4" />
-            </a>
-            <a
-              href="https://linkedin.com/company/nairametrics"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
+            <SocialLink href="https://facebook.com/nairametrics" icon={Facebook} />
+            <SocialLink href="https://twitter.com/nairametrics" icon={Twitter} />
+            <SocialLink href="https://youtube.com/nairametrics" icon={Youtube} />
+            <SocialLink href="https://linkedin.com/company/nairametrics" icon={Linkedin} />
           </div>
         </div>
       </div>
@@ -149,7 +121,7 @@ export default function Header() {
           {/* Desktop Nav */}
           <ul className="hidden lg:flex items-center">
             {navigationItems.map((item) => (
-              <NavItemComponent key={item.slug || "home"} item={item} />
+              <NavItemDesktop key={item.slug || "home"} item={item} />
             ))}
           </ul>
 
@@ -168,11 +140,7 @@ export default function Header() {
           <div className="lg:hidden bg-header border-t border-primary-foreground/20 animate-fade-in">
             <ul className="py-2">
               {navigationItems.map((item) => (
-                <MobileNavItem
-                  key={item.slug || "home"}
-                  item={item}
-                  onClose={() => setIsMenuOpen(false)}
-                />
+                <NavItemMobile key={item.slug || "home"} item={item} onClose={() => setIsMenuOpen(false)} />
               ))}
             </ul>
           </div>
@@ -213,11 +181,32 @@ export default function Header() {
   );
 }
 
-function NavItemComponent({ item }: { item: NavItem }) {
-  const hasChildren = item.children && item.children.length > 0;
+/* ----------- Supporting Components ----------- */
+
+function SocialLink({
+  href,
+  icon: Icon,
+}: {
+  href: string;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+    >
+      <Icon className="w-4 h-4" />
+    </a>
+  );
+}
+
+function NavItemDesktop({ item }: { item: NavItem }) {
+  const hasChildren = !!item.children?.length;
 
   return (
-    <li className="nav-item relative group">
+    <li className="relative group">
       <Link
         href={item.path}
         className="flex items-center gap-1 px-4 py-3 text-sm font-medium text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
@@ -227,12 +216,12 @@ function NavItemComponent({ item }: { item: NavItem }) {
       </Link>
 
       {hasChildren && (
-        <ul className="nav-dropdown group-hover:opacity-100 group-hover:visible">
+        <ul className="absolute left-0 top-full opacity-0 invisible group-hover:opacity-100 group-hover:visible bg-header-dark shadow-md transition-opacity">
           {item.children!.map((child) => (
             <li key={child.slug}>
               <Link
                 href={child.path}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary transition-colors"
+                className="block px-4 py-2 text-sm text-primary-foreground/80 hover:text-primary-foreground hover:bg-header/10 transition-colors"
               >
                 {child.label}
               </Link>
@@ -244,13 +233,13 @@ function NavItemComponent({ item }: { item: NavItem }) {
   );
 }
 
-function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }) {
+function NavItemMobile({ item, onClose }: { item: NavItem; onClose: () => void }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const hasChildren = item.children && item.children.length > 0;
+  const hasChildren = !!item.children?.length;
 
   return (
     <li>
-      <div className="flex items-center">
+      <div className="flex items-center justify-between">
         <Link
           href={item.path}
           onClick={onClose}
@@ -258,15 +247,14 @@ function MobileNavItem({ item, onClose }: { item: NavItem; onClose: () => void }
         >
           {item.label}
         </Link>
+
         {hasChildren && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="p-3 text-primary-foreground"
           >
             <ChevronDown
-              className={`w-4 h-4 transition-transform ${
-                isExpanded ? "rotate-180" : ""
-              }`}
+              className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
             />
           </button>
         )}

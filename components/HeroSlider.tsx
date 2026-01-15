@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import {
   WPPost,
@@ -29,17 +30,11 @@ export default function HeroSlider() {
         setIsLoading(false);
       }
     };
-
     loadPosts();
   }, []);
 
-  const goToPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + posts.length) % posts.length);
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % posts.length);
-  };
+  const goToPrev = () => setCurrentIndex((prev) => (prev - 1 + posts.length) % posts.length);
+  const goToNext = () => setCurrentIndex((prev) => (prev + 1) % posts.length);
 
   if (isLoading) {
     return (
@@ -55,13 +50,10 @@ export default function HeroSlider() {
     );
   }
 
-  if (posts.length === 0) {
-    return null;
-  }
+  if (!posts.length) return null;
 
   const mainPost = posts[currentIndex];
   const sidePostsStart = (currentIndex + 1) % posts.length;
-
   const sidePosts = [
     posts[sidePostsStart % posts.length],
     posts[(sidePostsStart + 1) % posts.length],
@@ -71,11 +63,11 @@ export default function HeroSlider() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Main Featured Post */}
+      {/* Main Post */}
       <div className="relative group">
         <HeroCard post={mainPost} isMain />
 
-        {/* Navigation Arrows */}
+        {/* Navigation */}
         <button
           onClick={goToPrev}
           className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
@@ -83,7 +75,6 @@ export default function HeroSlider() {
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-
         <button
           onClick={goToNext}
           className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
@@ -92,18 +83,16 @@ export default function HeroSlider() {
           <ChevronRight className="w-5 h-5" />
         </button>
 
-        {/* Dots Indicator */}
+        {/* Dots */}
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-          {posts.map((_, index) => (
+          {posts.map((_, i) => (
             <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
+              key={i}
+              onClick={() => setCurrentIndex(i)}
               className={`h-2 rounded-full transition-all ${
-                index === currentIndex
-                  ? "bg-white w-4"
-                  : "bg-white/50 w-2"
+                i === currentIndex ? "bg-white w-4" : "bg-white/50 w-2"
               }`}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={`Go to slide ${i + 1}`}
             />
           ))}
         </div>
@@ -127,42 +116,32 @@ interface HeroCardProps {
 function HeroCard({ post, isMain }: HeroCardProps) {
   const imageUrl = getFeaturedImageUrl(post);
   const categories = getPostCategories(post);
-  const primaryCategory = categories[0];
+  const primaryCategory = categories?.[0];
 
   return (
-    <article className="article-card relative overflow-hidden rounded-lg group h-full">
-      <Link
-        href={`/article/${post.slug}`}
-        className={`block relative aspect-[4/3] h-full`}
-      >
-        <img
+    <article className="relative overflow-hidden rounded-lg group h-full">
+      <Link href={`/article/${post.slug}`} className="block relative aspect-[4/3] h-full">
+        <Image
           src={imageUrl}
           alt={stripHtml(post.title.rendered)}
-          className="article-image absolute inset-0 w-full h-full object-cover transition-transform duration-300"
+          fill
+          className="article-image absolute inset-0 object-cover transition-transform duration-300"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-        <div
-          className={`absolute bottom-0 left-0 right-0 ${
-            isMain ? "p-6" : "p-4"
-          }`}
-        >
+        <div className={`absolute bottom-0 left-0 right-0 ${isMain ? "p-6" : "p-4"}`}>
           {primaryCategory && (
-            <span className="category-badge mb-2 inline-block text-xs">
+            <span className="bg-primary/20 text-primary px-2 py-1 text-xs rounded inline-block mb-2">
               {primaryCategory.name}
             </span>
           )}
 
           <h2
             className={`text-white font-bold leading-tight mb-2 ${
-              isMain
-                ? "text-xl md:text-2xl line-clamp-3"
-                : "text-sm line-clamp-2"
+              isMain ? "text-xl md:text-2xl line-clamp-3" : "text-sm line-clamp-2"
             }`}
-            dangerouslySetInnerHTML={{
-              __html: post.title.rendered,
-            }}
+            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
           />
 
           <div className="flex items-center gap-2 text-white/70 text-xs">

@@ -1,6 +1,6 @@
 import TrendingBar from "@/components/TrendingBar";
 import HeroSlider from "@/components/HeroSlider";
-import NewsFeed from "@/components/newsFeed/NewsFeed.server";
+import NewsFeed from "@/components/NewsFeed";
 import CategorySection from "@/components/CategorySection";
 import Sidebar from "@/components/Sidebar";
 
@@ -11,61 +11,30 @@ export default function Home() {
       <TrendingBar />
 
       <div className="container py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-8 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-8 space-y-8">
-            {/* Hero Section */}
+          <main className="lg:col-span-8 space-y-8">
             <HeroSlider />
 
-            {/* Latest News Tabs */}
             <NewsFeed
               title="Latest News"
               showTabs
               tabLabels={["Last 2 hours", "Last 6 hours", "Last 24 hours"]}
             />
 
-            {/* Economy Section */}
-            <CategorySection
-              title="Economy"
-              categorySlug="economy"
-              layout="featured"
-            />
-
-            {/* Markets Section */}
-            <CategorySection
-              title="Markets"
-              categorySlug="market-news"
-              layout="grid"
-            />
-
-            {/* Business News */}
-            <CategorySection
-              title="Business News"
-              categorySlug="nigeria-business-news"
-              layout="grid"
-            />
-
-            {/* Sectors */}
-            <CategorySection
-              title="Sectors"
-              categorySlug="industries"
-              layout="grid"
-            />
-
-            {/* Financial Literacy */}
-            <CategorySection
-              title="Financial Literacy"
-              categorySlug="financial-literacy-for-nigerians"
-              layout="list"
-            />
-          </div>
+            <CategorySection title="Economy" categorySlug="economy" layout="featured" />
+            <CategorySection title="Markets" categorySlug="market-news" layout="grid" />
+            <CategorySection title="Business News" categorySlug="nigeria-business-news" layout="grid" />
+            <CategorySection title="Sectors" categorySlug="industries" layout="grid" />
+            <CategorySection title="Financial Literacy" categorySlug="financial-literacy-for-nigerians" layout="list" />
+          </main>
 
           {/* Sidebar */}
-          <div className="lg:col-span-4">
-            <div className="sticky top-30">
+          <aside className="lg:col-span-4">
+            <div className="sticky top-24">
               <Sidebar />
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </>

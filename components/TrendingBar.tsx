@@ -10,7 +10,6 @@ export default function TrendingBar() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Works correctly in Next.js (browser + TS)
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -36,23 +35,14 @@ export default function TrendingBar() {
     }
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [posts.length]);
 
-  const goToPrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + posts.length) % posts.length);
-  };
+  const goToPrev = () => setCurrentIndex((prev) => (prev - 1 + posts.length) % posts.length);
+  const goToNext = () => setCurrentIndex((prev) => (prev + 1) % posts.length);
 
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % posts.length);
-  };
-
-  if (isLoading || posts.length === 0) {
-    return null;
-  }
+  if (isLoading || posts.length === 0) return null;
 
   const currentPost = posts[currentIndex];
 
@@ -61,20 +51,19 @@ export default function TrendingBar() {
       <div className="container py-2">
         <div className="flex items-center gap-4">
           {/* Badge */}
-          <div className="trending-badge flex-shrink-0">
+          <div className="flex items-center gap-1 bg-primary/10 px-2 py-0.5 rounded text-xs font-semibold flex-shrink-0">
             <TrendingUp className="w-3 h-3" />
             <span>TRENDING</span>
           </div>
 
           {/* Title */}
           <div className="flex-1 min-w-0 overflow-hidden">
-            <Link
-              href={`/article/${currentPost.slug}`}
-              className="text-sm font-medium hover:text-primary transition-colors truncate block"
-              dangerouslySetInnerHTML={{
-                __html: currentPost.title.rendered,
-              }}
-            />
+            <Link href={`/article/${currentPost.slug}`} className="truncate block">
+              <span
+                className="text-sm font-medium hover:text-primary transition-colors"
+                dangerouslySetInnerHTML={{ __html: currentPost.title.rendered }}
+              />
+            </Link>
           </div>
 
           {/* Controls */}

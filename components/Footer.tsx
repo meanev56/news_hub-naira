@@ -4,6 +4,29 @@ import Link from "next/link";
 import { Facebook, Twitter, Youtube, Linkedin, Mail } from "lucide-react";
 import NewsletterForm from "./NewsletterForm";
 
+const socialLinks: { href: string; icon: React.ComponentType<React.SVGProps<SVGSVGElement>> }[] = [
+  { href: "https://facebook.com/nairametrics", icon: Facebook },
+  { href: "https://twitter.com/nairametrics", icon: Twitter },
+  { href: "https://youtube.com/nairametrics", icon: Youtube },
+  { href: "https://linkedin.com/company/nairametrics", icon: Linkedin },
+];
+
+const categories = [
+  { label: "Economy", path: "/category/economy" },
+  { label: "Markets", path: "/markets" },
+  { label: "Sectors", path: "/category/industries" },
+  { label: "Financial Literacy", path: "/category/financial-literacy-for-nigerians" },
+  { label: "Exclusives", path: "/category/exclusives" },
+];
+
+const quickLinks = [
+  { label: "Business News", path: "/category/nigeria-business-news" },
+  { label: "Stock Market", path: "/markets/equities" },
+  { label: "Cryptocurrency", path: "/markets/cryptocurrency-news" },
+  { label: "Tech News", path: "/category/tech-news" },
+  { label: "Opinions", path: "/category/opinion-editorials" },
+];
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -19,18 +42,17 @@ export default function Footer() {
               We provide actionable insights for professionals and investors.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://facebook.com/nairametrics" target="_blank" rel="noopener noreferrer" className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded transition-colors">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="https://twitter.com/nairametrics" target="_blank" rel="noopener noreferrer" className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded transition-colors">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="https://youtube.com/nairametrics" target="_blank" rel="noopener noreferrer" className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded transition-colors">
-                <Youtube className="w-4 h-4" />
-              </a>
-              <a href="https://linkedin.com/company/nairametrics" target="_blank" rel="noopener noreferrer" className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded transition-colors">
-                <Linkedin className="w-4 h-4" />
-              </a>
+              {socialLinks.map(({ href, icon: Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded transition-colors"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
@@ -38,31 +60,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-4">Categories</h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/category/economy" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Economy
-                </Link>
-              </li>
-              <li>
-                <Link href="/markets" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Markets
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/industries" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Sectors
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/financial-literacy-for-nigerians" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Financial Literacy
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/exclusives" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Exclusives
-                </Link>
-              </li>
+              {categories.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    href={item.path}
+                    className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -70,31 +77,16 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-bold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/category/nigeria-business-news" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Business News
-                </Link>
-              </li>
-              <li>
-                <Link href="/markets/equities" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Stock Market
-                </Link>
-              </li>
-              <li>
-                <Link href="/markets/cryptocurrency-news" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Cryptocurrency
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/tech-news" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Tech News
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/opinion-editorials" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
-                  Opinions
-                </Link>
-              </li>
+              {quickLinks.map((item) => (
+                <li key={item.path}>
+                  <Link
+                    href={item.path}
+                    className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -109,6 +101,7 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+
             <div className="mt-6">
               <h5 className="font-medium mb-3">Newsletter</h5>
               <p className="text-xs text-primary-foreground/60 mb-3">
@@ -126,19 +119,21 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/80">
             <p>© {currentYear} Nairametrics. All Rights Reserved.</p>
             <div className="flex items-center gap-4">
-              <Link href="#" className="hover:text-primary-foreground transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="hover:text-primary-foreground transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="#" className="hover:text-primary-foreground transition-colors">
-                About Us
-              </Link>
+              <FooterLink label="Privacy Policy" href="#" />
+              <FooterLink label="Terms of Service" href="#" />
+              <FooterLink label="About Us" href="#" />
             </div>
           </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({ label, href }: { label: string; href: string }) {
+  return (
+    <Link href={href} className="hover:text-primary-foreground transition-colors">
+      {label}
+    </Link>
   );
 }
