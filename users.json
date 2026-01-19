@@ -1,9 +1,11 @@
 [
   {
-    "id": "d6fdedba-bc54-436e-8a09-4db97f8b205f",
-    "name": "emeja",
-    "email": "emekanjoku86@gmail.com",
-    "password": "$2b$10$Q.bsgQCsTYXW3MO.wTBLmetppvQmcTmBcEU7ZKNDie/vGp9kzvMqu",
-    "role": "user"
+    "id": "eaf8cc6c-b96c-4cf4-92ed-1313937f22fd",
+    "name": "AL-reader",
+    "email": "comav@lim.com",
+    "password": "$2b$10$I0.id6V.oBcQaBMob/h08u.wF.3H8KvGP1GR5obm.aAKMvGQSE/56",
+    "role": "user",
+    "approved": true,
+    "createdAt": 1768791307563
   }
 ]

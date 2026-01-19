@@ -1,18 +1,23 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get("auth_token")?.value;
-  if (!token) return NextResponse.redirect(new URL("/login", req.url));
+  const auth = req.cookies.get("auth")?.value;
+  const path = req.nextUrl.pathname;
 
-  const user: any = jwt.decode(token);
+  if (!auth && (path.startsWith("/dashboard") || path.startsWith("/admin"))) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
 
-  if (req.nextUrl.pathname.startsWith("/admin") && user.role !== "admin") {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (auth) {
+    const user = JSON.parse(auth);
+
+    if (user.expires < Date.now()) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    if (path.startsWith("/admin") && user.role === "user") {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
   }
 }
-
-export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*"],
-};

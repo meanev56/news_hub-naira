@@ -1,20 +1,15 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 
-const SECRET = process.env.AUTH_SECRET!;
+export async function GET() {
+  const auth = cookies().get("auth")?.value;
+  if (!auth) return NextResponse.json({ user: null });
 
-export async function GET(req: Request) {
-  try {
-    const cookieHeader = req.headers.get("cookie") || "";
-    const match = cookieHeader.match(/session=([^;]+)/);
-    const token = match ? match[1] : null;
+  const session = JSON.parse(auth);
 
-    if (!token) return NextResponse.json({ user: null });
-
-    const payload = jwt.verify(token, SECRET) as { id: string; email: string; role: string };
-
-    return NextResponse.json({ user: payload });
-  } catch {
+  if (session.expires < Date.now()) {
     return NextResponse.json({ user: null });
   }
+
+  return NextResponse.json({ user: session });
 }
