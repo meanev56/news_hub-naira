@@ -7,5 +7,14 @@
     "role": "user",
     "approved": true,
     "createdAt": 1768791307563
+  },
+  {
+    "id": "1f8aa813-c2c1-4568-8b14-68eef2e1b1fd",
+    "name": "njoku emeka",
+    "email": "perry@gmail.com",
+    "password": "$2b$10$JZjtxFzWXBvgdHiDAQDrf.nA7e.NHnnhUBT0p6f0HseEpwNhjmmji",
+    "role": "admin",
+    "approved": false,
+    "createdAt": 1768792233791
   }
 ]
