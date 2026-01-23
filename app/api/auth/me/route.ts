@@ -1,15 +1,20 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import users from "@/users.json";
 
 export async function GET() {
-  const auth = cookies().get("auth")?.value;
-  if (!auth) return NextResponse.json({ user: null });
+  const session = cookies().get("session")?.value;
+  if (!session) return NextResponse.json({ user: null });
 
-  const session = JSON.parse(auth);
+  const user = users.find((u) => u.id === session);
+  if (!user) return NextResponse.json({ user: null });
 
-  if (session.expires < Date.now()) {
-    return NextResponse.json({ user: null });
-  }
-
-  return NextResponse.json({ user: session });
+  return NextResponse.json({
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  });
 }

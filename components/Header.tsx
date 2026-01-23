@@ -20,8 +20,12 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [user, setUser] = useState<{ email: string; id: string } | null>(null);
-
+  const [user, setUser] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    role: "admin" | "user";
+  } | null>(null);
   const router = useRouter();
 
   // Fetch current user on mount
@@ -54,23 +58,37 @@ export default function Header() {
       <div className="bg-header-dark py-2">
         <div className="container flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
-            {!user && (
+           {!user ? (
               <>
                 <Link
                   href="/login"
-                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition"
                 >
                   Login
                 </Link>
                 <span className="text-primary-foreground/50">|</span>
                 <Link
                   href="/register"
-                  className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  className="text-primary-foreground/80 hover:text-primary-foreground transition"
                 >
                   Register
                 </Link>
-              </>
-            )}
+            </>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1 font-medium text-primary-foreground">
+                  {user.role === "admin" ? "🛡️" : "👤"} {user.name}
+                </span>
+
+    <button
+      onClick={handleLogout}
+      className="flex items-center gap-1 text-red-500 hover:text-red-600 transition"
+    >
+      <LogOut className="w-4 h-4" />
+      Logout
+    </button>
+  </div>
+)}
 
             {user && (
               <div className="flex items-center gap-2">
