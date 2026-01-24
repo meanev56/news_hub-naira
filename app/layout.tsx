@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/ReactQueryProvider"; // client wrapper
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: "Nairametrics Clone",
@@ -18,7 +17,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="scroll-smooth">
  {/* suppressHydrationWarning applied to body to prevent hydration errors */}
       <body suppressHydrationWarning className="bg-background text-foreground">        {/* Providers */}
-        <AuthProvider>
           <ReactQueryProvider>
             <TooltipProvider>
               <Toaster />
@@ -30,7 +28,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Footer />
             </TooltipProvider>
           </ReactQueryProvider>
-        </AuthProvider>
       </body>
     </html>
   );
