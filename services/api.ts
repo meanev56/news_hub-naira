@@ -209,9 +209,9 @@ export function formatDate(dateString: string): string {
 
 // Helper to strip HTML tags
 export function stripHtml(html: string): string {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
+  return html.replace(/<[^>]*>/g, "");
 }
+
 
 // Navigation structure
 export interface NavItem {
