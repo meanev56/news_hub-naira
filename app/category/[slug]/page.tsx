@@ -104,7 +104,7 @@ export default function CategoryPage() {
         {/* Sidebar */}
         <div className="lg:col-span-4">
           <div className="sticky top-[120px]">
-            {/* <Sidebar /> */}
+            <Sidebar />
           </div>
         </div>
       </div>
