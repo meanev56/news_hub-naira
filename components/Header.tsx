@@ -15,6 +15,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { navigationItems, NavItem } from "@/services/api";
+import AdBanner from "./AdBanner";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -112,6 +113,9 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Ad banner - placed here */}
+      <AdBanner />
 
       {/* Logo */}
       <div className="bg-header py-6">
