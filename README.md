@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Modern content + marketplace platform built with **Next.js 14+** (App Router)
 
-## Getting Started
+> A clean, fast website featuring curated articles, categorized content, and a marketplace section.
 
-First, run the development server:
+## Pages / Routes
+
+| Route                        | Description                              | Purpose                              |
+|------------------------------|------------------------------------------|--------------------------------------|
+| `/`                          | Home page                                | Landing page, featured content       |
+| `/market`                    | Market overview                          | Main marketplace landing             |
+| `/[category]`                | Category page (dynamic)                  | Lists articles/items in a category   |
+| `/[category]/[slug]`         | Article / Product detail                 | Single article or market item page   |
+
+## Tech Stack
+
+- **Framework**: Next.js 14+ (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Authentication**: JWT (JSON Web Tokens)
+- **Environment**: dotenv
+
+## Features (current)
+
+- SSR / SSG / ISR ready pages
+- Dynamic routes for categories & articles
+- Responsive design (mobile-first)
+- Basic JWT-based auth infrastructure
+- SEO-friendly structure
+
+## Installation
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/meanev56/news_hub-naira.git
+
+# 2. Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
+
+Create a .env.local file in the root of the project:
+
+# Required
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+JWT_SECRET=              # Change this in production!
+
+# Optional / future use
+# DATABASE_URL=postgresql://...
+# NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+Development
+
+# Start development server
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
+Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm run dev         # start dev server
+npm run build       # build for production
+npm run start       # run production build
+npm run lint        # run ESLint
+npm run format      # format code with Prettier
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+├── app/
+│   ├── (marketing)/
+│   │   ├── page.tsx                # Home page
+│   │   ├── market/
+│   │   │   └── page.tsx            # /market
+│   │   ├── [category]/
+│   │   │   ├── page.tsx            # /[category]
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx        # /[category]/[slug]
+│   ├── api/
+│   ├── layout.tsx
+│   └── globals.css
+├── components/
+├── lib/
+│   └── auth.ts                     # JWT helpers (if implemented)
+├── public/
+├── styles/
+├── .env.local                      # (not in git)
+├── next.config.js
+├── tailwind.config.ts
+├── tsconfig.json
+└── package.json
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deployment
+Recommended platforms:
 
-## Deploy on Vercel
+Vercel (easiest & best for Next.js)
+Netlify
+Render
+Railway
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Make sure to set the environment variables in your hosting platform:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+JWT_SECRET=your-very-long-random-secret-here
+
+Security Notes
+
+Change JWT_SECRET to a strong, random 32+ character string
+Use HTTPS in production
+Consider adding rate limiting & proper auth middleware
+
+Todo / Planned Features
+
+ User authentication & profiles
+ Search functionality
+ Comments / reactions on articles
+ Marketplace listings & filters
+ Admin dashboard
+ Dark mode
+ Newsletter signup
+
+Contributing
+Feel free to open issues and pull requests.
