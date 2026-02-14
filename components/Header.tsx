@@ -115,7 +115,7 @@ export default function Header() {
       </div>
 
       {/* Ad banner - placed here */}
-      <AdBanner />
+      {/* <AdBanner /> */}
 
       {/* Logo */}
       <div className="bg-header py-6">

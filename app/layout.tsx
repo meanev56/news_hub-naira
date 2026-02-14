@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "@/components/ReactQueryProvider"; // client wrapper
 import "./globals.css";
+import AdBanner from "@/components/AdBanner";
 
 export const metadata = {
   title: "Nairametrics Clone",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <TooltipProvider>
               <Toaster />
               {/* Header - usually a server component */}
+              <AdBanner />
               <Header />
               {/* Main content */}
               <main className="flex-1">{children}</main>
